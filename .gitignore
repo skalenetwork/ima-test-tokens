@@ -47,3 +47,4 @@ abis
 build/
 data/
 artifacts/**
+cache/
