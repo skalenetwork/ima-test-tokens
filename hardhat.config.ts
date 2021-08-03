@@ -12,7 +12,7 @@ task("erc20", "Deploy ERC20 Token sample to chain")
     .addOptionalParam("contract", "ERC20 Token contract")
     .addParam("name", "ERC20 Token name")
     .addParam("symbol", "ERC20 Token symbol")
-    .setAction(async (taskArgs: any, { ethers }) => {
+    .setAction(async (taskArgs: any, { ethers, network }) => {
         const contractName = taskArgs.contract ? taskArgs.contract : "ERC20Example";
         const erc20Factory = await ethers.getContractFactory(contractName);
         const erc20 = await erc20Factory.deploy(taskArgs.name, taskArgs.symbol);
@@ -21,7 +21,7 @@ task("erc20", "Deploy ERC20 Token sample to chain")
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc20_address = erc20.address;
         jsonObj.erc20_abi = erc20.interface;
-        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + taskArgs.symbol + "-" + erc20.address + ".json", JSON.stringify(jsonObj, null, 4));
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
 
@@ -29,7 +29,7 @@ task("erc721", "Deploy ERC721 Token sample to chain")
     .addOptionalParam("contract", "ERC721 Token contract")
     .addParam("name", "ERC721 Token name")
     .addParam("symbol", "ERC721 Token symbol")
-    .setAction(async (taskArgs: any, { ethers }) => {
+    .setAction(async (taskArgs: any, { ethers, network }) => {
         const contractName = taskArgs.contract ? taskArgs.contract : "ERC721Example";
         const erc721Factory = await ethers.getContractFactory(contractName);
         const erc721 = await erc721Factory.deploy(taskArgs.name, taskArgs.symbol);
@@ -38,14 +38,14 @@ task("erc721", "Deploy ERC721 Token sample to chain")
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc721_address = erc721.address;
         jsonObj.erc721_abi = erc721.interface;
-        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + taskArgs.symbol + "-" + erc721.address + ".json", JSON.stringify(jsonObj, null, 4));
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
 
 task("erc1155", "Deploy ERC1155 Token sample to chain")
     .addOptionalParam("contract", "ERC1155 Token contract")
     .addParam("uri", "ERC1155 Base Token URI")
-    .setAction(async (taskArgs: any, { ethers }) => {
+    .setAction(async (taskArgs: any, { ethers, network }) => {
         const contractName = taskArgs.contract ? taskArgs.contract : "ERC1155Example";
         const erc1155Factory = await ethers.getContractFactory(contractName);
         const erc1155 = await erc1155Factory.deploy(taskArgs.uri);
@@ -54,7 +54,7 @@ task("erc1155", "Deploy ERC1155 Token sample to chain")
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc1155_address = erc1155.address;
         jsonObj.erc1155_abi = erc1155.interface;
-        await fs.writeFile("data/" + contractName + "-" + taskArgs.uri + "-" + erc1155.address + ".json", JSON.stringify(jsonObj, null, 4));
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
 
