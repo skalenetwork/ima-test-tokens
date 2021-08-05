@@ -54,7 +54,7 @@ task("erc1155", "Deploy ERC1155 Token sample to chain")
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc1155_address = erc1155.address;
         jsonObj.erc1155_abi = erc1155.interface;
-        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.uri + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
 
