@@ -5,6 +5,8 @@ import "@nomiclabs/hardhat-ethers";
 import * as dotenv from "dotenv"
 import { promises as fs } from "fs";
 
+import { getAbi } from './abi';
+
 dotenv.config();
 
 
@@ -20,7 +22,7 @@ task("erc20", "Deploy ERC20 Token sample to chain")
         console.log("Address:", erc20.address);
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc20_address = erc20.address;
-        jsonObj.erc20_abi = erc20.interface;
+        jsonObj.erc20_abi = getAbi(erc20.interface);
         await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
@@ -37,7 +39,7 @@ task("erc721", "Deploy ERC721 Token sample to chain")
         console.log("Address:", erc721.address);
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc721_address = erc721.address;
-        jsonObj.erc721_abi = erc721.interface;
+        jsonObj.erc721_abi = getAbi(erc721.interface);
         await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
@@ -53,7 +55,7 @@ task("erc1155", "Deploy ERC1155 Token sample to chain")
         console.log("Address:", erc1155.address);
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc1155_address = erc1155.address;
-        jsonObj.erc1155_abi = erc1155.interface;
+        jsonObj.erc1155_abi = getAbi(erc1155.interface);
         await fs.writeFile("data/" + contractName + "-" + taskArgs.uri + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
