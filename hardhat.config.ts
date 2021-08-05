@@ -104,10 +104,8 @@ task("mint-erc1155", "Mint ERC1155 Token")
         const data = taskArgs.data ? taskArgs.data : "0x";
         let res = null;
         if (batch) {
-          // const tokenIds = owasp.verifyArgumentIsArrayOfIntegers({value: taskArgs.tokenId});
-          // const amounts = owasp.verifyArgumentIsArrayOfIntegers({value: taskArgs.amount});
-          const tokenIds = taskArgs.tokenId;
-          const amounts = taskArgs.amount;
+          const tokenIds = JSON.parse(taskArgs.tokenId);
+          const amounts = JSON.parse(taskArgs.amount);
           if (tokenIds.length !== amounts.length) {
             console.log("\n\n!!! Length of arrays should be equal !!!\n\n");
             return;
