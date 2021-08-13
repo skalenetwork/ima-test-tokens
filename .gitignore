@@ -45,6 +45,5 @@ yarn.lock
 abis
 
 build/
-data/
 artifacts/**
 cache/
