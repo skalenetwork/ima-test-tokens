@@ -44,6 +44,23 @@ task("erc721", "Deploy ERC721 Token sample to chain")
     }
 );
 
+task("erc721meta", "Deploy ERC721 (with metadata) Token sample to chain")
+    .addOptionalParam("contract", "ERC721 Token contract")
+    .addParam("name", "ERC721 wMeta Token name")
+    .addParam("symbol", "ERC721 wMeta Token symbol")
+    .setAction(async (taskArgs: any, { ethers, network }) => {
+        const contractName = taskArgs.contract ? taskArgs.contract : "ERC721_with_metadata";
+        const erc721Factory = await ethers.getContractFactory(contractName);
+        const erc721 = await erc721Factory.deploy(taskArgs.name, taskArgs.symbol);
+        console.log("ERC721 Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "was deployed");
+        console.log("Address:", erc721.address);
+        const jsonObj: {[str: string]: any} = {};
+        jsonObj.erc721_address = erc721.address;
+        jsonObj.erc721_abi = getAbi(erc721.interface);
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
+    }
+);
+
 task("erc1155", "Deploy ERC1155 Token sample to chain")
     .addOptionalParam("contract", "ERC1155 Token contract")
     .addParam("uri", "ERC1155 Base Token URI")
