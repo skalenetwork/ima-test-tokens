@@ -25,7 +25,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
-contract ERC721_with_metadata is AccessControlEnumerable, ERC721URIStorage, ERC721Burnable {
+contract ERC721MetaExpample is AccessControlEnumerable, ERC721URIStorage, ERC721Burnable {
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
