@@ -55,8 +55,8 @@ task("erc721meta", "Deploy ERC721 (with metadata) Token sample to chain")
         console.log("ERC721 Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "was deployed");
         console.log("Address:", erc721.address);
         const jsonObj: {[str: string]: any} = {};
-        jsonObj.erc721_address = erc721.address;
-        jsonObj.erc721_abi = getAbi(erc721.interface);
+        jsonObj.erc721meta_address = erc721.address;
+        jsonObj.erc721meta_abi = getAbi(erc721.interface);
         await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
