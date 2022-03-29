@@ -49,7 +49,7 @@ task("erc721meta", "Deploy ERC721 (with metadata) Token sample to chain")
     .addParam("name", "ERC721 wMeta Token name")
     .addParam("symbol", "ERC721 wMeta Token symbol")
     .setAction(async (taskArgs: any, { ethers, network }) => {
-        const contractName = taskArgs.contract ? taskArgs.contract : "ERC721MetaExpample";
+        const contractName = taskArgs.contract ? taskArgs.contract : "ERC721MetaExample";
         const erc721Factory = await ethers.getContractFactory(contractName);
         const erc721 = await erc721Factory.deploy(taskArgs.name, taskArgs.symbol);
         console.log("ERC721 Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "was deployed");
