@@ -169,6 +169,23 @@ task("add-minter-erc721", "Add minter to ERC721 Token")
     }
 );
 
+
+task("add-minter-erc721-meta", "Add minter to ERC721 Token")
+    .addParam("tokenAddress", "Address of ERC721 token")
+    .addParam("address", "Minter Address of ERC721 token")
+    .setAction(async (taskArgs: any, { ethers }) => {
+        const contractName = "ERC721MetaExample";
+        const erc721Factory = await ethers.getContractFactory(contractName);
+        const erc721 = erc721Factory.attach(taskArgs.tokenAddress);
+        const minterRole = await erc721.MINTER_ROLE();
+        const res = await(await erc721.grantRole(minterRole, taskArgs.address)).wait();
+        console.log("ERC721 Token at address:", taskArgs.tokenAddress);
+        console.log("Minter address:", taskArgs.address);
+        console.log("Gas spent:", res.gasUsed.toNumber());
+    }
+);
+
+
 task("add-minter-erc1155", "Add minter to ERC1155 Token")
     .addParam("tokenAddress", "Address of ERC1155 token")
     .addParam("address", "Minter Address of ERC1155 token")
