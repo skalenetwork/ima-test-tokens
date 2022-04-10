@@ -48,8 +48,13 @@ contract ERC721MetaExample is AccessControlEnumerable, ERC721URIStorage, ERC721B
         return true;
     }
 
-    function setTokenURI(uint256 tokenId, string memory _tokenURI) external {
-        _setTokenURI(tokenId, _tokenURI);
+    function setTokenURI(uint256 tokenId, string calldata tokenUri)
+        external
+        returns (bool)
+    {
+        require(_exists(tokenId), "Token does not exists");
+        _setTokenURI(tokenId, tokenUri);
+        return true;
     }
 
     function supportsInterface(bytes4 interfaceId)
