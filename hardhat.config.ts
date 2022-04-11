@@ -52,7 +52,7 @@ task("erc721meta", "Deploy ERC721 (with metadata) Token sample to chain")
         const contractName = taskArgs.contract ? taskArgs.contract : "ERC721MetaExample";
         const erc721Factory = await ethers.getContractFactory(contractName);
         const erc721 = await erc721Factory.deploy(taskArgs.name, taskArgs.symbol);
-        console.log("ERC721 Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "was deployed");
+        console.log("ERC721 with metadata Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "was deployed");
         console.log("Address:", erc721.address);
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc721meta_address = erc721.address;
