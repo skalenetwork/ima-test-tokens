@@ -27,6 +27,24 @@ task("erc20", "Deploy ERC20 Token sample to chain")
     }
 );
 
+task("erc20-wrap", "Deploy ERC20 Wrap Token sample to chain")
+    .addOptionalParam("contract", "ERC20 Token contract")
+    .addParam("name", "ERC20 Token name")
+    .addParam("symbol", "ERC20 Token symbol")
+    .addParam("wrap", "ERC20 wrapping token")
+    .setAction(async (taskArgs: any, { ethers, network }) => {
+        const contractName = taskArgs.contract ? taskArgs.contract : "ERC20Wrap";
+        const erc20Factory = await ethers.getContractFactory(contractName);
+        const erc20 = await erc20Factory.deploy(taskArgs.name, taskArgs.symbol, taskArgs.wrap);
+        console.log("ERC20 Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "and wrapping token", taskArgs.wrap, "was deployed");
+        console.log("Address:", erc20.address);
+        const jsonObj: {[str: string]: any} = {};
+        jsonObj.erc20_wrap_address = erc20.address;
+        jsonObj.erc20_wrap_abi = getAbi(erc20.interface);
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
+    }
+);
+
 task("erc721", "Deploy ERC721 Token sample to chain")
     .addOptionalParam("contract", "ERC721 Token contract")
     .addParam("name", "ERC721 Token name")
