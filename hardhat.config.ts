@@ -9,6 +9,21 @@ import { getAbi } from './abi';
 
 dotenv.config();
 
+export function stringValue(value: string | null | undefined) {
+  if (value) {
+      return value;
+  } else {
+      return "";
+  }
+}
+
+export function numberValue(value: string | null | undefined) {
+  if (value) {
+      return parseInt(value);
+  } else {
+      return 0;
+  }
+}
 
 task("erc20", "Deploy ERC20 Token sample to chain")
     .addOptionalParam("contract", "ERC20 Token contract")
@@ -273,8 +288,21 @@ const config: HardhatUserConfig = {
     }
   },
   etherscan: {
-    apiKey: "QSW5NZN9RCYXSZWVB32DMUN83UZ5EJUREI"
-  }
+    apiKey: {
+      mainnet: stringValue(process.env.ETHERSCAN),
+      schain: stringValue(process.env.ETHERSCAN)
+    },
+    customChains: [
+      {
+        network: "schain",
+        chainId: numberValue(process.env.CHAIN_ID),
+        urls: {
+          apiURL: stringValue(process.env.BROWSER_URL) + "api",
+          browserURL: stringValue(process.env.BROWSER_URL)
+        }
+      }
+    ]
+  },
 };
 
 export default config;

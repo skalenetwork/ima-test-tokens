@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 /**
- *   ERC20Custom.sol - SKALE Test tokens
+ *   ERC20Blacklist.sol - SKALE Test tokens
  *   Copyright (C) 2022-Present SKALE Labs
  *   @author Artem Payvin
  *
@@ -22,11 +22,13 @@
 pragma solidity 0.8.6;
 
 
-contract ERC20Custom {
+contract ERC20Blacklist {
 
     mapping (address => uint256) private _balances;
 
     mapping (address => mapping (address => uint256)) private _allowances;
+
+    mapping (address => bool) public isBlackListed;
 
     uint256 private _totalSupply;
 
@@ -34,14 +36,31 @@ contract ERC20Custom {
     string private _symbol;
     uint8 private _decimals;
 
+    address public mainOwner;
+
     event Approval(address owner, address spender, uint256 amount);
 
     event Transfer(address from, address to, uint256 amount);
+
+    event DestroyedBlackFunds(address _blackListedUser, uint _balance);
+
+    event AddedBlackList(address _user);
+
+    event RemovedBlackList(address _user);
+
+    /**
+      * @dev Throws if called by any account other than the owner.
+      */
+    modifier onlyOwner() {
+        require(msg.sender == mainOwner);
+        _;
+    }
 
     constructor(string memory tokenName, string memory tokenSymbol) {
         _name = tokenName;
         _symbol = tokenSymbol;
         _decimals = 18;
+        mainOwner = msg.sender;
     }
 
     function mint(address account, uint256 amount) external returns (bool) {
@@ -116,6 +135,34 @@ contract ERC20Custom {
             _allowances[msg.sender][spender] - subtractedValue
         );
         return true;
+    }
+
+    /**
+    * @dev Allows the current owner to transfer control of the contract to a newOwner.
+    * @param newOwner The address to transfer ownership to.
+    */
+    function transferOwnership(address newOwner) public onlyOwner {
+        if (newOwner != address(0)) {
+            mainOwner = newOwner;
+        }
+    }
+
+    function addBlackList (address _evilUser) public onlyOwner {
+        isBlackListed[_evilUser] = true;
+        emit AddedBlackList(_evilUser);
+    }
+
+    function removeBlackList (address _clearedUser) public onlyOwner {
+        isBlackListed[_clearedUser] = false;
+        emit RemovedBlackList(_clearedUser);
+    }
+
+    function destroyBlackFunds (address _blackListedUser) public onlyOwner {
+        require(isBlackListed[_blackListedUser]);
+        uint dirtyFunds = balanceOf(_blackListedUser);
+        _balances[_blackListedUser] = 0;
+        _totalSupply -= dirtyFunds;
+        emit DestroyedBlackFunds(_blackListedUser, dirtyFunds);
     }
 
     function _transfer(address sender, address recipient, uint256 amount) internal virtual {

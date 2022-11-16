@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 /**
- *   ERC721Example.sol - SKALE Interchain Messaging Agent Test tokens
+ *   ERC721MetaExample.sol - SKALE Test tokens
  *   Copyright (C) 2021-Present SKALE Labs
  *   @author Artem Payvin
  *
