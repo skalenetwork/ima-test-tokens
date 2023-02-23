@@ -72,7 +72,7 @@ contract HMToken is HMTokenInterface, AccessControlEnumerable {
         _decimals = 18;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setRoleAdmin(MINTER_ROLE, MINTER_ROLE);
-        _setupRole(MINTER_ROLE, msg.sender);
+        _setupRole(MINTER_ROLE, 0xD2aAA00500000000000000000000000000000000);
     }
 
     function mint(address account, uint256 amount) external returns (bool) {

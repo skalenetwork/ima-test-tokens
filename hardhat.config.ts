@@ -289,13 +289,13 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      mainnet: stringValue(process.env.ETHERSCAN),
-      schain: stringValue(process.env.ETHERSCAN)
+      mainnet: process.env.ETHERSCAN as string,
+      schain: process.env.ETHERSCAN as string
     },
     customChains: [
       {
         network: "schain",
-        chainId: numberValue(process.env.CHAIN_ID),
+        chainId: Number(process.env.CHAIN_ID),
         urls: {
           apiURL: stringValue(process.env.BROWSER_URL) + "api",
           browserURL: stringValue(process.env.BROWSER_URL)
