@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 /**
- *   HMToken.sol - SKALE Interchain Messaging Agent Test tokens
+ *   HMToken.sol - SKALE Test tokens
  *   Copyright (C) 2022-Present SKALE Labs
  *   @author Artem Payvin
  *
@@ -70,6 +70,7 @@ contract HMToken is HMTokenInterface, AccessControlEnumerable {
         _name = tokenName;
         _symbol = tokenSymbol;
         _decimals = 18;
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setRoleAdmin(MINTER_ROLE, MINTER_ROLE);
         _setupRole(MINTER_ROLE, 0xD2aAA00500000000000000000000000000000000);
     }
