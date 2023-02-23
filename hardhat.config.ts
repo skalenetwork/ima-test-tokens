@@ -273,8 +273,21 @@ const config: HardhatUserConfig = {
     }
   },
   etherscan: {
-    apiKey: "QSW5NZN9RCYXSZWVB32DMUN83UZ5EJUREI"
-  }
+    apiKey: {
+      mainnet: process.env.ETHERSCAN as string,
+      schain: process.env.ETHERSCAN as string
+    },
+    customChains: [
+      {
+        network: "schain",
+        chainId: Number(process.env.CHAIN_ID),
+        urls: {
+          apiURL: process.env.API_URL as string,
+          browserURL: process.env.BROWSER_URL as string
+      }
+      }
+    ]
+  },
 };
 
 export default config;
