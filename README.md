@@ -52,6 +52,37 @@ Help:
 npx hardhat help erc20
 ```
 
+### ERC20 Wrap Deploy
+
+Deploy ERC20 Wrap sample based on openzeppelin contracts:
+
+To main-chain:
+
+```bash
+npx hardhat erc20-wrap --name ERC20TokenName --symbol ERC20TokenSymbol --wrap ERC20WrappingAddress --network mainnet
+```
+
+To skale-chain:
+
+```bash
+npx hardhat erc20-wrap --name ERC20TokenName --symbol ERC20TokenSymbol --wrap ERC20WrappingAddress --network schain
+```
+
+To deploy custom token - please develop your ERC20 contract and add option param with you contract name:
+
+```bash
+--contract "Your contract name"
+
+npx hardhat erc20-wrap --contract ERC20CustomName --name ERC20TokenName --symbol ERC20TokenSymbol --wrap ERC20WrappingAddress --network mainnet
+npx hardhat erc20-wrap --contract ERC20CustomName --name ERC20TokenName --symbol ERC20TokenSymbol --wrap ERC20WrappingAddress --network schain
+```
+
+Help:
+
+```bash
+npx hardhat help erc20-wrap
+```
+
 ### ERC721 Deploy
 
 Deploy ERC721 sample based on openzeppelin contracts:

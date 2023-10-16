@@ -9,6 +9,21 @@ import { getAbi } from './abi';
 
 dotenv.config();
 
+export function stringValue(value: string | null | undefined) {
+  if (value) {
+      return value;
+  } else {
+      return "";
+  }
+}
+
+export function numberValue(value: string | null | undefined) {
+  if (value) {
+      return parseInt(value);
+  } else {
+      return 0;
+  }
+}
 
 task("erc20", "Deploy ERC20 Token sample to chain")
     .addOptionalParam("contract", "ERC20 Token contract")
@@ -23,6 +38,24 @@ task("erc20", "Deploy ERC20 Token sample to chain")
         const jsonObj: {[str: string]: any} = {};
         jsonObj.erc20_address = erc20.address;
         jsonObj.erc20_abi = getAbi(erc20.interface);
+        await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
+    }
+);
+
+task("erc20-wrap", "Deploy ERC20 Wrap Token sample to chain")
+    .addOptionalParam("contract", "ERC20 Token contract")
+    .addParam("name", "ERC20 Token name")
+    .addParam("symbol", "ERC20 Token symbol")
+    .addParam("wrap", "ERC20 wrapping token")
+    .setAction(async (taskArgs: any, { ethers, network }) => {
+        const contractName = taskArgs.contract ? taskArgs.contract : "ERC20Wrap";
+        const erc20Factory = await ethers.getContractFactory(contractName);
+        const erc20 = await erc20Factory.deploy(taskArgs.name, taskArgs.symbol, taskArgs.wrap);
+        console.log("ERC20 Token with name", taskArgs.name, "and symbol", taskArgs.symbol, "and wrapping token", taskArgs.wrap, "was deployed");
+        console.log("Address:", erc20.address);
+        const jsonObj: {[str: string]: any} = {};
+        jsonObj.erc20_wrap_address = erc20.address;
+        jsonObj.erc20_wrap_abi = getAbi(erc20.interface);
         await fs.writeFile("data/" + contractName + "-" + taskArgs.name + "-" + network.name + ".json", JSON.stringify(jsonObj, null, 4));
     }
 );
@@ -255,8 +288,21 @@ const config: HardhatUserConfig = {
     }
   },
   etherscan: {
-    apiKey: "QSW5NZN9RCYXSZWVB32DMUN83UZ5EJUREI"
-  }
+    apiKey: {
+      mainnet: process.env.ETHERSCAN as string,
+      schain: process.env.ETHERSCAN as string
+    },
+    customChains: [
+      {
+        network: "schain",
+        chainId: Number(process.env.CHAIN_ID),
+        urls: {
+          apiURL: stringValue(process.env.BROWSER_URL) + "api",
+          browserURL: stringValue(process.env.BROWSER_URL)
+        }
+      }
+    ]
+  },
 };
 
 export default config;

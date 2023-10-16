@@ -60,7 +60,7 @@ contract ERC721MetaExample is AccessControlEnumerable, ERC721URIStorage, ERC721B
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(AccessControlEnumerable, ERC721, ERC721URIStorage)
+        override(AccessControlEnumerable, ERC721)
         returns (bool)
     {
         return interfaceId == type(IAccessControlEnumerable).interfaceId

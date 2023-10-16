@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 /**
- *   ERC20Example.sol - SKALE Test tokens
- *   Copyright (C) 2021-Present SKALE Labs
+ *   ERC20Wrap.sol - SKALE Test tokens
+ *   Copyright (C) 2022-Present SKALE Labs
  *   @author Artem Payvin
  *
  *   SKALE IMA is free software: you can redistribute it and/or modify
@@ -21,25 +21,18 @@
 
 pragma solidity 0.8.6;
 
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Wrapper.sol";
 
-contract ERC20Example is ERC20Burnable, AccessControlEnumerable {
-
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+contract ERC20Wrap is ERC20Wrapper {
 
     constructor(
         string memory contractName,
-        string memory contractSymbol
+        string memory contractSymbol,
+        IERC20 originToken
     )
+        ERC20Wrapper(originToken)
         ERC20(contractName, contractSymbol)
     {
-        _setRoleAdmin(MINTER_ROLE, MINTER_ROLE);
-        _setupRole(MINTER_ROLE, _msgSender());
-    }
-
-    function mint(address account, uint256 value) public {
-        require(hasRole(MINTER_ROLE, _msgSender()), "Sender is not a Minter");
-        _mint(account, value);
+        
     }
 }
